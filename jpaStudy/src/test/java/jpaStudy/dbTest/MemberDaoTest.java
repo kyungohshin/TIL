@@ -1,35 +1,28 @@
 package jpaStudy.dbTest;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import dao.MemberDao;
 import dto.Member;
 
-/**
- *
- *
- * @author USER
- * @history
- *          2020. 10. 11. initial creation
- */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "file:src/main/resources/*.xml" })
 public class MemberDaoTest {
 
 	@Autowired
 	private MemberDao dao;
 
-	@Before
+    @BeforeEach
 	public void setup() {
 
 	}
@@ -48,19 +41,19 @@ public class MemberDaoTest {
 	@Test
 	public void testReadMember() throws Exception {
 		Member m = dao.selectMember(3);
-		assertThat(m.getAge(), is(30));
+        assertThat(m.getAge()).isEqualTo(30);
 	}
 
 	@Test
 	public void testReadWithTeam() throws Exception {
 		Member m = dao.selectMemberWithAge(3, 30);
-		assertThat(m != null, is(true));
+        assertThat(m).isNotNull();
 	}
 
 	@Test
 	public void testJoin() throws Exception {
 		List<Member> m = dao.selectMemberJoinTeam(1);
-		assertThat(m.size(), is(2));
-		assertThat(m.get(1).getAge(), is(28));
+        assertThat(m).hasSize(2);
+        assertThat(m.get(1).getAge()).isEqualTo(28);
 	}
 }
