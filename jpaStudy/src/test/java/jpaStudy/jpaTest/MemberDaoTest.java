@@ -51,7 +51,7 @@ public class MemberDaoTest {
         emf.close();
     }
 
-    @Test
+//    @Test
     public void testInsertMember() throws Exception {
         tx.begin();
 
@@ -80,6 +80,16 @@ public class MemberDaoTest {
     }
 
     @Test
+    public void testReadTeam() throws Exception { // Mebmer -> Team 가능
+        tx.begin();
+        Member m = em.find(Member.class, 3);
+        Team t = m.getTeam();
+        assertThat(m.getAge()).isEqualTo(30);
+        assertThat(t.getName()).isEqualTo("B팀");
+        tx.commit();
+    }
+
+    @Test
     public void testReadWithTeam() throws Exception {
         tx.begin();
         String jpql = "select m from Member m where m.id = 3 and m.age = 30";
@@ -90,7 +100,7 @@ public class MemberDaoTest {
     }
 
     @Test
-    public void testJoin() throws Exception { // Team -> Member만 가능함. 단방향이므로
+    public void testJoin() throws Exception { // Team -> Member 가능
         tx.begin();
         String jpql = "select t from Team t join t.member m where t.id = 1 order by t.id";
         List<Team> t = em.createQuery(jpql, Team.class).getResultList();

@@ -6,9 +6,9 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.ManyToOne;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -33,9 +33,11 @@ public class Member {
 
 	private String username;
 
-    @Temporal(TemporalType.TIMESTAMP) // 동시적용 x
+//    @Temporal(TemporalType.TIMESTAMP) // 동시적용 x
     private Date regdate;
 
-	private int team_id;
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID")
+    private Team team;
 
 }
