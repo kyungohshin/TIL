@@ -18,7 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
  * 웹테스트는 어렵지만, 스프링이 강력한 기능을 제공
  * 스프링 mvc형태로 테스트가 실행되도록함
  */
-@WebMvcTest(HomeController.class)
+//@WebMvcTest(HomeController.class)
+@WebMvcTest()
 public class HomeControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
