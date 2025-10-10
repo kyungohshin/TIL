@@ -16,7 +16,7 @@
 		
 		<ul>
 			<li th:each="taco : ${order.tacos}">
-			<span th:text="${taco.name">taco name</span></li>
+			<span th:text="${taco.name}">taco name</span></li>
 		</ul>
 		
 		<div th:if="${#fields.hasErrors()}">

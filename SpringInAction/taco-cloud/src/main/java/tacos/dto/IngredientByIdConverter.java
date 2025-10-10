@@ -1,5 +1,7 @@
 package tacos.dto;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,7 @@ public class IngredientByIdConverter
 
 	@Override
 	public Ingredient convert(String id) {
-		return ingredientRepo.findById(id);
+		Optional<Ingredient> opt = ingredientRepo.findById(id);
+		return opt.isPresent() ? opt.get() : null;
 	}
 }
