@@ -24,7 +24,7 @@ public class EchoServerV3 {
 						@Override
 						public void initChannel(SocketChannel ch) {
 							ChannelPipeline p = ch.pipeline();
-							p.addLast(new LoggingHandler(LogLevel.DEBUG));
+							p.addLast(new LoggingHandler(LogLevel.ERROR));
 							p.addLast(new EchoServerHandler());
 						}
 					});

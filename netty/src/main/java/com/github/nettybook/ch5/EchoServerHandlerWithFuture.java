@@ -12,7 +12,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  */
 @Sharable
 public class EchoServerHandlerWithFuture extends ChannelInboundHandlerAdapter {
-	// 데이터가 들어왔을때, 클라이언트 소켓채널에 데이터 기록을 완료하고, 기록완료메시지와 기록된 메시지의 크기를 출력하고 초켓채널 닫는 이벤트코드
+	// 데이터가 들어왔을때, 클라이언트 소켓채널에 데이터 기록을 완료하고, 기록완료메시지와 기록된 메시지의 크기를 출력하고 소켓채널 닫는 이벤트코드
 
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
