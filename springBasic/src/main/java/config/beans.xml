@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd"
+	default-init-method="default_init" default-destroy-method="default_destroy">
+	<!-- bean에 등록해둔init, destroy가 없다면 여기서 찾게됨. 해당 클래스에서 default_init()메소드를 호출, 만약 메소드가 없다면 무시하기때문에 오류가 안남 -->
+
+	<bean id="hello" class='beans.HelloWorldKo'/> 
+	<!-- lazy-init : true - xml로딩할때 객체가 생성되지않고 getBean할때 생성. (디폴트는 false) -->
+	<bean id="t1" class='beans.TestBean' lazy-init="true"/>
+	
+	<!-- scope : prototype - xml로딩할때 객체가 생성되지않고 getBean메서드를 호출할때마다 새로운 객체가 생성됨 -->
+	<bean id="t2" class='beans.TestBean' scope="prototype"/>
+
+	<!-- 빈 생성될때 beans.TestBean 클래스에서 bean_init()메소드를 호출(얘네는 없으면 오류) -->
+	<bean id="t3" class='beans.TestBean' lazy-init="true" init-method="bean_init" destroy-method="bean_destory"/>
+
+	<!-- 빈 생성될때 beans.TestBean 클래스에서 bean_init()메소드를 호출(얘네는 없으면 오류) -->
+	<bean id="t4" class='beans.TestBean' lazy-init="true" init-method="bean_init"/>
+	<bean class='processor.TestBeanPostProcessor' />
+	
+	<bean id='obj1' class='beans.TestBean2' lazy-init="true">
+		<constructor-arg value='100' type='int'/> <!-- spring은 int보다 double우선인데, int로 넣고싶을때는 type을 지정 -->
+		<constructor-arg value='50' /> <!-- 지정해주지않으면 알아서 double로 인식 -->
+		<constructor-arg value='abcd' />
+<!-- 		<constructor-arg>
+			<bean class="beans.TestBean" />
+		</constructor-arg> -->
+		<constructor-arg ref='t4' />
+	</bean>
+	
+	<bean id="t5" class='beans.TestBean2' lazy-init="true">
+		<property name="data1" value="100" />
+		<property name="data2" value="100" />
+		<property name="data3" value="alsie" />
+		<property name="tb" ref="t2" />
+	</bean>
+	
+	<bean id="listBean" class='beans.ListBean' lazy-init="true">
+		<property name="list">
+			<list>
+				<value>문자열1</value>
+				<value>문자열2</value>
+				<value>문자열3</value>
+			</list>
+		</property>
+		<property name="list2">
+			<list>
+				<value type='int'>1</value>
+				<value type='int'>2</value>
+				<value type='int'>3</value>
+			</list>
+		</property>		
+		<property name="list3">
+			<list>
+				<bean class='beans.TestBean' lazy-init="true" />
+				<ref bean='t1'/>
+				<ref bean='t1'/>
+			</list>
+		</property>
+		<property name="set">
+			<set>
+				<value>문자열셋1</value>
+				<value>문자열셋2</value>
+				<value>문자열셋3</value>
+			</set>
+		</property>				
+		<property name="map">
+			<map>
+				<entry key="a1" value='문자열' />
+				<entry key="a2" value='100' value-type='int'/>
+				<entry key="a3" value-ref='t1' />
+				<entry key="a4" >
+					<list>
+						<value type='int'>1</value>
+						<value type='int'>2</value>
+						<value type='int'>3</value>
+					</list>
+				</entry>
+			</map>
+		</property>
+		<property name="property">
+			<props>
+				<prop key="p1">문자열1</prop>
+				<prop key="p2">문자열2</prop>
+				<prop key="p3">문자열3</prop>
+			</props>
+		</property>										
+	</bean>
+	
+</beans>

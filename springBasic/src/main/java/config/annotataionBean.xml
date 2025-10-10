@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	<!-- context 추가 -->
+	<!-- aop 추가 -->
+	
+	<!-- bean 클래스에 설정되어있는 어노테이션을 이용한다. 이게 붙어야 @Autowired 이런게 먹음 -->
+	<context:annotation-config />
+	<!-- 해당 패키지 내에있는 어노테이션은 분석해서 빈등록 -->
+	<context:component-scan base-package="beans" />
+	
+	<!-- <bean id='tb1' class="beans.TestBean" lazy-init="true"/>
+	<bean id='java500' class="beans.TestBean" lazy-init="true"/>
+	<bean id='tb2' class="beans.TestBean2" /> -->
+	
+	<bean class="beans.DataBean1" lazy-init="true"/>
+	<bean id='advisor1' class="advisor.AdvisorClass" lazy-init="true"/>
+	
+	<aop:config>
+		<aop:aspect ref='advisor1'>
+			<!-- 모든패키지의 모든클래스에 있는 aopTest()메소드를 호출하는 행위 -->
+			<!-- <aop:pointcut id="point1" expression="execution(* aopTest())" /> -->
+			
+			<!-- 반환타입이 void, beans.DataBean1클래스, aopTest메서드, 매개변수 없음 -->
+			<!-- <aop:pointcut id="point1" expression="execution(void beans.DataBean1.aopTest())" /> -->
+			
+			<!-- 반환타입이 void, beans.DataBean1클래스, aopTest메서드, String매개변수 -->
+			<!-- <aop:pointcut id="point1" expression="execution(void beans.DataBean1.aopTest(java.lang.String))" /> -->	
+			
+			<!-- 반환타입이 void, beans.DataBean1클래스, aopTest메서드, String, 모든타입매개변수2개 -->
+			<!-- <aop:pointcut id="point1" expression="execution(void beans.DataBean1.aopTest(String, *, *))" />	 -->
+			
+			<!-- 반환타입이 void, beans.DataBean1클래스, aopTest메서드, 모든매개변수(개수포함) -->
+			<!-- <aop:pointcut id="point1" expression="execution(void beans.DataBean1.aopTest(..))" /> -->
+			
+			<!-- 반환타입이 void, beans.DataBean1클래스, 모든메서드, 모든매개변수(개수포함) -->
+			<!-- <aop:pointcut id="point1" expression="execution(void beans.DataBean1.*(..))" /> -->
+			
+			<!-- 반환타입이 void, beans안의 모든클래스, aopTest메서드, 모든매개변수(개수포함) -->
+			<!-- <aop:pointcut id="point1" expression="execution(void beans.*.method1(..))" /> -->
+			
+			<!-- 반환타입이 void, 모든패지지, 모든매서드, 모든매개변수(개수포함) -->
+			<!-- <aop:pointcut id="point1" expression="execution(void *.*(..))" /> -->
+
+			<!-- 모든반환타입, 모든패지지, 모든매서드, 모든매개변수(개수포함) -->
+			<!-- <aop:pointcut id="point1" expression="execution(* *.*(..))" /> -->
+			<aop:pointcut id="point1" expression="execution(* *(..))" /> <!-- 같은의미 -->
+					
+			<!-- 위의 메서드가 호출되기전에 advisor1가 가지고있는 beforeMethod메서드를 먼저 호출해라  -->
+			<aop:before method="beforeMethod" pointcut-ref="point1" />
+			<aop:after method="afterMethod" pointcut-ref="point1" />
+			<aop:around method="aroundMethod" pointcut-ref="point1" />
+			<aop:after-returning method="afterReturningMethod" pointcut-ref="point1" />
+			<aop:after-throwing method="afterThrowingMethod" pointcut-ref="point1" throwing="e1"/>
+		</aop:aspect>
+	</aop:config>
+</beans>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd"
+	default-autowire="byName">
+
+	<bean id='databean' class='beans.DataBean1' scope='prototype'/>
+
+	<bean id="obj1" class='beans.Bean'>
+		<property name="dataBean1" ref='databean' />
+		<property name="dataBean2" ref='databean' />
+	</bean> 
+
+	<bean id="obj2" class='beans.Bean' autowire="byName" />
+	<bean id='dataBean1' class='beans.DataBean1' />
+	<bean id='dataBean2' class='beans.DataBean1' primary="true"/> <!-- 동일한 타입일떄 우선 -->
+
+	<!-- 한가지 이상이므로 에러가 맞지만 primary때문에 ok -->
+	<bean id="obj3" class='beans.Bean' autowire="byType" />
+
+	<bean class='beans.TestBean' />
+	<bean id="obj4" class='beans.TestBean2' autowire="constructor">
+		<constructor-arg value='100' type='int'/>
+		<constructor-arg value='100' type='double'/>
+		<constructor-arg value='abdc' />		
+	</bean>
+	
+	<!-- 디폴트 autowired를 받고싶지않을때 no -->
+	<bean id="obj5" class='beans.Bean' autowire="no" />
+	
+</beans>
